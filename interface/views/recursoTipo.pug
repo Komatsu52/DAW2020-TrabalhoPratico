@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    center
+        .w3-container.w3-margin.w3-center(style="height:350px;width:40%;margin:auto;")
+            .w3-card-4.w3-white.w3-border.w3-border-lime
+                header.w3-container.w3-margin-top
+                    .w3-lime
+                        h3 
+                            b Inserir Novo Tipo
+                    .w3-container
+                        form.w3-container(action='/recurso/tipo' method="POST")
+                            label
+                                b Novo Tipo
+                                input.w3-input.w3-border(type="text", name="tipo" required)
+
+                            input.w3-btn.w3-lime.w3-border.w3-margin(type="submit", value="Inserir")
+
+                footer.w3-container
+                    address.w3-right
+                        a(href="/recurso") 
+                            button.w3-button.w3-margin Voltar

@@ -1,0 +1,32 @@
+extends layout
+
+block content
+    center
+        .w3-container.w3-margin.w3-center(style="height:350px;width:40%;margin:auto;")
+            .w3-card-4.w3-white.w3-border.w3-border-lime
+
+                header.w3-container.w3-margin-top
+                    .w3-lime
+                        h3 
+                            b Editar Perfil 
+                    .w3-container
+                        form.w3-container(action='/editarPerfil' method="POST")
+                            label
+                                b Nome
+                            input.w3-input.w3-border(type="text", name="nome",value=uti.nome)
+
+                            label
+                                b Filiação
+                            input.w3-input.w3-border(type="text", name="filiacao",value=uti.filiacao)                        
+
+                            label
+                                b Password
+                            input.w3-input.w3-border(type="password", name="password")                        
+
+                            input.w3-btn.w3-border.w3-margin.w3-lime(type="submit", value="Atualizar")
+
+
+                footer.w3-container
+                    address.w3-right
+                        a(href="/recurso") 
+                            button.w3-button.w3-margin Voltar

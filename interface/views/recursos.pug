@@ -1,0 +1,123 @@
+extends layout 
+
+block content
+
+    - var url = "/recurso?"
+    if(search != undefined && searchBy != undefined)
+        - url += "search="
+        - url += search
+        - url += "&searchBy="
+        - url += searchBy
+        - url += "&"
+
+    w3-container.w3-center 
+        h1(style="color: #ffffff")
+            b 
+                a(href="/recurso" style="text-decoration: none") Gestão de Recursos    
+    
+    .w3-container.w3-margin.w3-right(style="color: #ffffff") Conta de #{email}
+
+    center
+        form.w3-container.w3-margin(action='/recurso' enctype="multipart/form-data" method="GET" style="position: absolute;display:flex;top: 10%;left: 50%;transform: translate(-50%,-50%)")
+            select.w3-select.w3-border(name="searchBy" style="width:200px")
+                option(value="tipo") Tipo
+                option(value="titulo") Título
+                option(value="subtitulo") Subtítulo
+                option(value="nomeProdutor") Utilizador
+                option(value="dataCriacao") Data de Criação
+                option(value="dataRegisto") Data de Registo
+
+            input.w3-input.w3-border(type="text" name="search" placeholder="Procurar..." style="width:400px")
+
+    .w3-container.w3-margin
+        if(nivel != 0)
+            .w3-btn.w3-border.w3-left.w3-lime
+                a(href='/recursoForm') Novo Recurso
+        if(nivel == 2)
+            .w3-btn.w3-border.w3-left.w3-lime(style="margin-left: 40px")
+                a(href='/tipoForm') Novo Tipo 
+
+        .w3-btn.w3-border.w3-right.w3-lime
+            a(href='/logout') Logout
+
+        .w3-btn.w3-border.w3-right.w3-lime(style="margin-right: 40px")
+            a(href='/editarPerfil') Editar Perfil        
+
+    if(nivel == 2)
+        .w3-container.w3-margin
+            table.w3-table-all
+                tr.w3-lime
+                    th Tipo
+                    th Titulo
+                    th Subtitulo
+                    th Utilizador
+                    th Data de Criação
+                    th Data de Registo
+                    th
+                    th
+                
+                    each r in lista
+                        if (!r.validado)
+                            tr 
+                                td= r.tipo
+                                td= r.titulo
+                                td= r.subtitulo
+                                td= r.nomeProdutor
+                                td= r.dataCriacao
+                                td= r.dataRegisto
+                                td
+                                    form(method='POST' action=`/recurso/aprovar/${r._id}`)
+                                        input(type='submit' value='Aprovado' style="background-color:#009900; color: white;")
+                                        input(type="hidden" name="nomeFicheiro" value=r.nomeFicheiro)
+                                td
+                                    form(method='POST' action=`/recurso/naoaprovar/${r._id}`)
+                                        input(type='submit' value='Não Aprovado' style="background-color:#e60000; color: white;")
+        
+    .w3-container.w3-margin
+        table.w3-table-all
+            tr.w3-lime
+                th
+                    a(href=`${url}orderBy=tipo`) Tipo
+                th
+                    a(href=`${url}orderBy=titulo`) Titulo
+                th 
+                    a(href=`${url}orderBy=subtitulo`) Subtitulo
+                th 
+                    a(href=`${url}orderBy=nomeProdutor`) Utilizador
+                th 
+                    a(href=`${url}orderBy=-dataCriacao`) Data de Criação
+                th 
+                    a(href=`${url}orderBy=-dataRegisto`) Data de Registo
+                th 
+                    a(href=`${url}orderBy=-likes`) Gostos
+                th
+                if (nivel != 0)
+                    th
+                
+            each r in lista
+                if (r.validado)
+                    tr 
+                        td= r.tipo
+                        td
+                             a(href=`/recurso/${r._id}`) #{r.titulo}
+                        td= r.subtitulo
+                        td= r.nomeProdutor
+                        td= r.dataCriacao
+                        td= r.dataRegisto
+                        td
+                            if(r.likes.includes(email))
+                                form(method='POST' action=`/recurso/like/${r._id}` )
+                                    input(type='submit' value=`${(r.likes).length} Likes` style="background-color:#ff9900; color: white;")
+                            else
+                                form(method='POST' action=`/recurso/like/${r._id}` )
+                                    input(type='submit' value=`${(r.likes).length} Likes` style="background-color:white; color: black;")
+                        td
+                            form(method='GET' action=`/recurso/download/${r.nomeFicheiro}`)
+                                input(type='submit' value='Download' style="background-color:#99bbff; color: white;")
+
+                        if (nivel == 2 || r.emailProdutor == email)
+                            td
+                                form(method='POST' action=`/recurso/${r._id}`)
+                                    input(type='submit' value='Apagar' style="background-color:#e60000; color: white;")
+                        else if (nivel != 0)
+                            td

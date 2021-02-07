@@ -1,0 +1,47 @@
+extends layout
+
+block content
+    center
+        .w3-container.w3-margin.w3-center(style="height:350px;width:40%;margin:auto;")
+            .w3-card-4.w3-white.w3-border.w3-border-lime
+                header.w3-container.w3-margin-top
+                    .w3-lime
+                        h3 
+                            b Inserir Novo Recurso
+                    .w3-container
+                        form.w3-container(action='/recurso' enctype="multipart/form-data" method="POST")
+                            label
+                                b Tipo
+                                select.w3-select.w3-border(name="tipo" size=tipos.length multiple="multiple" required)
+                                    each t in tipos
+                                        option(value=t.tipo) #{t.tipo}
+        
+                            label
+                                b Título
+                                input.w3-input.w3-border(type="text", name="titulo" required)
+
+                            label
+                                b Subtítulo
+                                input.w3-input.w3-border(type="text", name="subtitulo")
+
+                            label
+                                b Visibilidade
+                                select.w3-select.w3-border(name="visibilidade" required)
+                                    option(value="true") Público
+                                    option(value="false") Privado                        
+
+                            label
+                                b Data de Criação
+                                input.w3-input.w3-border(type="date", name="dataCriacao")
+
+                            label
+                                b Ficheiro a anexar:
+                                input.w3-input.w3-border(type="file" name="myfile" required)                  
+
+                            input.w3-btn.w3-lime.w3-border.w3-margin.w3-lime(type="submit", value="Inserir")
+                            input.w3-btn.w3-lime.w3-border.w3-margin.w3-lime(type="reset", value="Limpar valores")
+
+                footer.w3-container
+                    address.w3-right
+                        a(href="/recurso") 
+                            button.w3-button.w3-margin Voltar
